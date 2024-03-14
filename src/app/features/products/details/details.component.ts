@@ -34,7 +34,6 @@ export default class DetailsComponent implements OnInit{
     } else {
       svgContent = `<svg aria-hidden="true" class="ui-review-capability__rating__rating__star" width="16.8" height="16" viewBox="0 0 10 10"><g fill="none" fill-rule="evenodd"><path fill="transparent" d="M5.256 8L2.131 9.648l.597-3.49L.2 3.684l3.494-.509L5.256 0l1.562 3.176 3.494.51-2.528 2.471.597 3.491z" stoke-width="1" stroke="rgba(0, 0, 0, 0.25)" vector-effect="non-scaling-stroke"></path></g></svg>`;
     }
-
     return this._sanitazer.bypassSecurityTrustHtml(svgContent);
   }
 
