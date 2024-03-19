@@ -24,7 +24,15 @@ export const CartStore = signalStore(
   withMethods(
     ({products, ...store}) => ({
       addToCart(product: Product){
-        patchState(store, {products: [...products(), product]});
+        const isProductInCart = products().find((item: Product) => product.id === item.id);
+
+        if (isProductInCart) {
+          isProductInCart.qty++;
+          isProductInCart.subTotal = isProductInCart.qty * isProductInCart.price;
+          patchState(store, {products: [...products()]});
+        } else {
+          patchState(store, {products: [...products(), product]});
+        }
       },
       removeToCart(id: number){
         const updateProducts = products().filter(product => product.id != id);
@@ -38,7 +46,7 @@ export const CartStore = signalStore(
 );
 
 function calculateTotalAmount(products: Product[]): number{
-  return products.reduce((acc, product) => acc + product.price, 0);
+  return products.reduce((acc, product) => acc + product.subTotal, 0);
 };
 
 function calculateProductsCount(products: Product[]): number{

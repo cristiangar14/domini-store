@@ -24,7 +24,8 @@ export class ProductService {
       map((products: Product[])=> products.map(
         (product: Product)=> ({
           ...product,
-          qty: 1
+          qty: 1,
+          subTotal: product.price
         }))),
       tap((products: Product[]) => this.products.set(products)))
     .subscribe();
