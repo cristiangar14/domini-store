@@ -5,6 +5,7 @@
         <app-card
           class="w-full p-4 lg:w-1/4 md:w-1/2"
           [product]="product"
+          (addToCardEvent)="onAddToCardEvent($event)"
         />
       }
     </div>
