@@ -1,6 +1,7 @@
-import { computed } from "@angular/core";
+import { computed, inject } from "@angular/core";
 import { patchState, signalStore, withComputed, withMethods, withState } from "@ngrx/signals";
 import { Product } from "@shared/models/product.interface";
+import { ToastrService } from "ngx-toastr";
 
 export interface CartStore {
   products: Product[];
@@ -22,7 +23,7 @@ export const CartStore = signalStore(
     totalAmount: computed(()=> calculateTotalAmount(products()))
   })),
   withMethods(
-    ({products, ...store}) => ({
+    ({products, ...store}, toastSvc = inject(ToastrService)) => ({
       addToCart(product: Product){
         const isProductInCart = products().find((item: Product) => product.id === item.id);
 
@@ -33,13 +34,17 @@ export const CartStore = signalStore(
         } else {
           patchState(store, {products: [...products(), product]});
         }
+
+        toastSvc.success('Product added', 'Domini Store')
       },
       removeToCart(id: number){
         const updateProducts = products().filter(product => product.id != id);
         patchState(store, {products: updateProducts});
+        toastSvc.info('Product removed', 'Domini Store');
       },
       clearCart(){
-        patchState(store, initialState)
+        patchState(store, initialState);
+        toastSvc.info('Cart cleared', 'Domini Store');
       },
     })
   ),
